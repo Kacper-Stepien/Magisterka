@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersModule } from './orders/orders.module';
+import { OrderDetailsModule } from './order-details/order-details.module';
+import { OrderDetail } from './order-details/order-detail.entity';
 
 @Module({
   imports: [
@@ -14,7 +16,7 @@ import { OrdersModule } from './orders/orders.module';
       username: 'postgres',
       password: 'kacper',
       database: 'magisterka',
-      entities: [Order],
+      entities: [Order, OrderDetail],
       synchronize: false,
       logging: false,
       extra: {
@@ -22,6 +24,7 @@ import { OrdersModule } from './orders/orders.module';
       },
     }),
     OrdersModule,
+    OrderDetailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
