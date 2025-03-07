@@ -6,11 +6,6 @@ import { Order } from './order.entity';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Get(':id')
-  async getOrder(@Param('id') id: string): Promise<Order> {
-    return this.ordersService.findOne(+id);
-  }
-
   @Get()
   async getOrders(
     @Query('page') page: string = '1',
@@ -29,5 +24,10 @@ export class OrdersController {
     @Param('id') id: string,
   ): Promise<Order> {
     return this.ordersService.findOneWithDetailsAndProducts(+id);
+  }
+
+  @Get(':id')
+  async getOrder(@Param('id') id: string): Promise<Order> {
+    return this.ordersService.findOne(+id);
   }
 }
