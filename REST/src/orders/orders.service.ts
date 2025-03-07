@@ -31,7 +31,7 @@ export class OrdersService {
   async findOneWithDetailsAndProducts(id: number): Promise<Order> {
     return this.ordersRepository.findOne({
       where: { order_id: id },
-      relations: ['orderDetails', 'orderDetails.product'], // Pobieramy szczegóły zamówienia i produkty
+      relations: ['orderDetails', 'orderDetails.product'], 
     });
   }
 }

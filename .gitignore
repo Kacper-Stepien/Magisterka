@@ -3,6 +3,10 @@ REST/dist
 REST/node_modules
 REST/build
 
+GraphQL/dist
+GraphQL/node_modules
+GraphQL/build
+
 # Logs
 logs
 *.log
