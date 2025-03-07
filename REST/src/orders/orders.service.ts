@@ -20,4 +20,18 @@ export class OrdersService {
       skip: (page - 1) * limit,
     });
   }
+
+  async findOneWithDetails(id: number): Promise<Order> {
+    return this.ordersRepository.findOne({
+      where: { order_id: id },
+      relations: ['orderDetails'],
+    });
+  }
+
+  async findOneWithDetailsAndProducts(id: number): Promise<Order> {
+    return this.ordersRepository.findOne({
+      where: { order_id: id },
+      relations: ['orderDetails', 'orderDetails.product'], // Pobieramy szczegóły zamówienia i produkty
+    });
+  }
 }
