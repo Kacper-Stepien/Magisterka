@@ -1,0 +1,100 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  product_id: Int!
+  product_name: String!
+  supplier_id: Int!
+  category_id: Int!
+  quantity_per_unit: String!
+  unit_price: Float!
+  units_in_stock: Int!
+  units_on_order: Int!
+  reorder_level: Int!
+  discontinued: Int!
+  orderDetails: [OrderDetail]
+}
+
+type OrderDetail {
+  order_id: Int!
+  product_id: Int!
+  unit_price: Float!
+  quantity: Int!
+  discount: Float!
+  order: Order!
+  product: Product!
+}
+
+type Order {
+  order_id: Int!
+  customer_id: String!
+  employee_id: Int!
+  order_date: DateTime!
+  required_date: DateTime
+  shipped_date: DateTime
+  ship_via: Int!
+  freight: Float!
+  ship_name: String!
+  ship_address: String!
+  ship_city: String!
+  ship_region: String
+  ship_postal_code: String
+  ship_country: String!
+  orderDetails: [OrderDetail]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Shipper {
+  shipper_id: Int!
+  company_name: String!
+  phone: String!
+}
+
+type Query {
+  order(id: Int!): Order!
+  orders(page: Int! = 1, limit: Int! = 10): [Order!]!
+  orderWithDetails(id: Int!): Order!
+  orderFull(id: Int!): Order!
+  orderDetails(orderId: Int!): [OrderDetail!]!
+  orderDetail(orderId: Int!): OrderDetail!
+  products: [Product!]!
+  product(id: Int!): Product!
+  shippers: [Shipper!]!
+  shipper(id: Int!): Shipper!
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(id: Int!, updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Int!): Product!
+}
+
+input CreateProductInput {
+  product_name: String!
+  supplier_id: Int!
+  category_id: Int!
+  quantity_per_unit: String!
+  unit_price: Float!
+  units_in_stock: Int!
+  units_on_order: Int!
+  reorder_level: Int!
+  discontinued: Int!
+}
+
+input UpdateProductInput {
+  product_name: String
+  supplier_id: Int
+  category_id: Int
+  quantity_per_unit: String
+  unit_price: Float
+  units_in_stock: Int
+  units_on_order: Int
+  reorder_level: Int
+  discontinued: Int
+  product_id: Int!
+}
