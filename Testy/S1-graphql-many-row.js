@@ -3,14 +3,14 @@ import { sleep, check } from "k6";
 
 export const options = {
   stages: [
-    { duration: "1m", target: 5000 },
-    { duration: "6m", target: 5000 },
-    { duration: "1m", target: 0 },
+    { duration: "2m", target: 100 },
+    { duration: "12m", target: 100 },
+    { duration: "2m", target: 0 },
   ],
 };
 
 const PAGE = 1;
-const LIMIT = 100;
+const LIMIT = 500;
 
 export default function () {
   const query = `
