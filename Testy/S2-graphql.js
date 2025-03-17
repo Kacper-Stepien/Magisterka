@@ -1,24 +1,22 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
+const VUS = parseInt(__ENV.VUS) || 10;
+
 export const options = {
   stages: [
-    { duration: "10m", target: 10000 },
-    { duration: "80m", target: 10000 },
-    { duration: "10m", target: 0 },
-    // { duration: "2m", target: 4000 },
-    // { duration: "12m", target: 4000 },
-    // { duration: "2m", target: 0 },
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
+    { duration: "2m", target: 0 },
   ],
 };
 
-const PAGE = 1;
-const LIMIT = 100;
+const ORDER_ID = 10248;
 
 export default function () {
   const query = `
-    query ($page: Int!, $limit: Int!) {
-      orders(page: $page, limit: $limit) {
+      query ($id: Int!) {
+        orderWithDetails(id: $id) {
           order_id
           employee_id
           customer_id
@@ -33,11 +31,17 @@ export default function () {
           ship_region
           ship_postal_code
           ship_country
+          orderDetails {
+            product_id
+            unit_price
+            quantity
+            discount
+          }
+        }
       }
-    }
-  `;
+    `;
 
-  const variables = { page: PAGE, limit: LIMIT };
+  const variables = { id: ORDER_ID };
 
   const payload = JSON.stringify({
     query: query,
@@ -48,14 +52,14 @@ export default function () {
     headers: { "Content-Type": "application/json" },
   };
 
-  const res = http.post("http://localhost:3000/graphql", payload, params);
+  let res = http.post("http://localhost:3000/graphql", payload, params);
 
   check(res, {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      //   console.log(json);
-      return json.data && json.data.orders && json.data.orders.length > 0;
+      // console.log(json);
+      return json.data && json.data.orderFull !== null;
     },
   });
 

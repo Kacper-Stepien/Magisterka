@@ -3,8 +3,8 @@ import { sleep, check } from "k6";
 
 export const options = {
   stages: [
-    { duration: "2m", target: 100 },
-    { duration: "12m", target: 100 },
+    { duration: "2m", target: 4000 },
+    { duration: "12m", target: 4000 },
     { duration: "2m", target: 0 },
   ],
 };
@@ -21,19 +21,6 @@ export default function () {
       query ($id: Int!) {
         order(id: $id) {
           order_id
-          employee_id
-          customer_id
-          order_date
-          required_date
-          shipped_date
-          ship_via
-          freight
-          ship_name
-          ship_address
-          ship_city
-          ship_region
-          ship_postal_code
-          ship_country
         }
       }
     `;

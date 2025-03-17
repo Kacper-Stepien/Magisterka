@@ -6,8 +6,8 @@ export const options = {
     { duration: "10m", target: 10000 },
     { duration: "80m", target: 10000 },
     { duration: "10m", target: 0 },
-    // { duration: "2m", target: 4000 },
-    // { duration: "12m", target: 4000 },
+    // { duration: "2m", target: 100 },
+    // { duration: "12m", target: 100 },
     // { duration: "2m", target: 0 },
   ],
 };
@@ -20,19 +20,6 @@ export default function () {
     query ($page: Int!, $limit: Int!) {
       orders(page: $page, limit: $limit) {
           order_id
-          employee_id
-          customer_id
-          order_date
-          required_date
-          shipped_date
-          ship_via
-          freight
-          ship_name
-          ship_address
-          ship_city
-          ship_region
-          ship_postal_code
-          ship_country
       }
     }
   `;
