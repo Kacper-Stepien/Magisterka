@@ -18,9 +18,7 @@ export default function () {
       "order status is 200": (r) => r.status === 200,
     });
 
-    let detailsRes = http.get(
-      `http://localhost:3000/order-details?orderId=10248`
-    );
+    let detailsRes = http.get(`http://localhost:3000/order-details/10248`);
     check(detailsRes, {
       "orderDetails status is 200": (r) => r.status === 200,
     });
