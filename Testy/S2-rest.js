@@ -1,24 +1,27 @@
 import http from "k6/http";
 import { sleep, check, group } from "k6";
 
+const VUS = parseInt(__ENV.VUS) || 10;
+const ORDER_ID = 10248;
+
 export const options = {
   stages: [
-    { duration: "2m", target: 4000 },
-    { duration: "12m", target: 4000 },
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
     { duration: "2m", target: 0 },
   ],
 };
 
-const ORDER_ID = 10248;
-
 export default function () {
   group("Transaction: Order Details with Products", function () {
-    let orderRes = http.get(`http://localhost:3000/orders/10248`);
+    let orderRes = http.get(`http://localhost:3000/orders/${ORDER_ID}`);
     check(orderRes, {
       "order status is 200": (r) => r.status === 200,
     });
 
-    let detailsRes = http.get(`http://localhost:3000/order-details/10248`);
+    let detailsRes = http.get(
+      `http://localhost:3000/order-details/${ORDER_ID}`
+    );
     check(detailsRes, {
       "orderDetails status is 200": (r) => r.status === 200,
     });
