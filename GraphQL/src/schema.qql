@@ -60,6 +60,10 @@ type Query {
   orders(page: Int! = 1, limit: Int! = 10): [Order!]!
   orderWithDetails(id: Int!): Order!
   orderFull(id: Int!): Order!
+  orderOptimized(id: Int!): Order!
+  ordersOptimized(page: Int! = 1, limit: Int! = 10): [Order!]!
+  orderWithDetailsOptimized(id: Int!): Order!
+  orderFullOptimized(id: Int!): Order!
   orderDetails(orderId: Int!): [OrderDetail!]!
   orderDetail(orderId: Int!): OrderDetail!
   products: [Product!]!

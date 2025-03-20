@@ -1,6 +1,7 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Info } from '@nestjs/graphql';
 import { OrdersService } from './orders.service';
 import { Order } from './order.entity';
+import { GraphQLResolveInfo } from 'graphql';
 
 @Resolver(() => Order)
 export class OrdersResolver {
@@ -31,5 +32,39 @@ export class OrdersResolver {
     @Args('id', { type: () => Int }) id: number,
   ): Promise<Order> {
     return this.ordersService.findOneWithDetailsAndProducts(id);
+  }
+
+  // Optymalizacja zapytania ////////////////////////////////////////////////////////////////////////////
+  @Query(() => Order, { name: 'orderOptimized' })
+  async getOrderOptimized(
+    @Args('id', { type: () => Int }) id: number,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Order> {
+    return this.ordersService.findOneOptimized(id, info);
+  }
+
+  @Query(() => [Order], { name: 'ordersOptimized' })
+  async getOrdersOptimized(
+    @Args('page', { type: () => Int, defaultValue: 1 }) page: number,
+    @Args('limit', { type: () => Int, defaultValue: 10 }) limit: number,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Order[]> {
+    return this.ordersService.findManyOptimized(page, limit, info);
+  }
+
+  @Query(() => Order, { name: 'orderWithDetailsOptimized' })
+  async getOrderWithDetailsOptimized(
+    @Args('id', { type: () => Int }) id: number,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Order> {
+    return this.ordersService.findOneWithDetailsOptimized(id, info);
+  }
+
+  @Query(() => Order, { name: 'orderFullOptimized' })
+  async getOrderFullOptimized(
+    @Args('id', { type: () => Int }) id: number,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Order> {
+    return this.ordersService.findOneWithDetailsAndProductsOptimized(id, info);
   }
 }
