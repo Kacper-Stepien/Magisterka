@@ -2,16 +2,14 @@ import http from "k6/http";
 import { sleep, check } from "k6";
 
 export const options = {
-  vus: 1,
-  time: "1s",
-  // stages: [
-  //   // { duration: "10m", target: 10000 },
-  //   // { duration: "80m", target: 10000 },
-  //   // { duration: "10m", target: 0 },
-  //   { duration: "2m", target: 4000 },
-  //   { duration: "12m", target: 4000 },
-  //   { duration: "2m", target: 0 },
-  // ],
+  stages: [
+    // { duration: "10m", target: 10000 },
+    // { duration: "80m", target: 10000 },
+    // { duration: "10m", target: 0 },
+    { duration: "2m", target: 4000 },
+    { duration: "12m", target: 4000 },
+    { duration: "2m", target: 0 },
+  ],
 };
 
 const PAGE = 1;

@@ -20,6 +20,17 @@ export class OrdersService {
     return order;
   }
 
+  async findOrderDetailsForOrder(orderId: number): Promise<any> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_id: orderId },
+      relations: ['orderDetails'],
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with id ${orderId} not found`);
+    }
+    return order.orderDetails;
+  }
+
   async findMany(page: number, limit: number): Promise<Order[]> {
     const orders = await this.ordersRepository.find({
       take: limit,

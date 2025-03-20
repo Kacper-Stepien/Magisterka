@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 4000;
+const VUS = parseInt(__ENV.VUS) || 10;
 
 export const options = {
   stages: [
@@ -15,31 +15,23 @@ const ORDER_ID = 10248;
 
 export default function () {
   const query = `
-      query ($id: Int!) {
-        order(id: $id) {
-          order_id
-          employee_id
-          customer_id
-          order_date
-          required_date
-          shipped_date
-          ship_via
-          freight
-          ship_name
-          ship_address
-          ship_city
-          ship_region
-          ship_postal_code
-          ship_country
-          orderDetails {
-            product_id
-            unit_price
-            quantity
-            discount
-          }
+    query ($id: Int!) {
+        orderFullOptimized(id: $id) {
+            order_id
+            customer_id
+            order_date
+            ship_country
+            orderDetails {
+                unit_price
+                quantity
+                product {
+                    product_id
+                    product_name
+                }
+            }
         }
-      }
-    `;
+    }
+  `;
 
   const variables = { id: ORDER_ID };
 
@@ -59,7 +51,7 @@ export default function () {
     "GraphQL response has data": (r) => {
       const json = r.json();
       // console.log(json);
-      return json.data && json.data.orderFull !== null;
+      return json.data && json.data.orderFullOptimized !== null;
     },
   });
 

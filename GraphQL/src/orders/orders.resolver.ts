@@ -1,7 +1,16 @@
-import { Resolver, Query, Args, Int, Info } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Int,
+  Info,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { OrdersService } from './orders.service';
 import { Order } from './order.entity';
 import { GraphQLResolveInfo } from 'graphql';
+import { OrderDetail } from 'src/order-details/order-detail.entity';
 
 @Resolver(() => Order)
 export class OrdersResolver {
@@ -10,6 +19,16 @@ export class OrdersResolver {
   @Query(() => Order, { name: 'order' })
   async getOrder(@Args('id', { type: () => Int }) id: number): Promise<Order> {
     return this.ordersService.findOne(id);
+  }
+
+  @ResolveField(() => [OrderDetail], { name: 'orderDetails' })
+  async getOrderDetails(@Parent() order: Order): Promise<OrderDetail[]> {
+    // Jeśli Order już ma załadowane orderDetails, zwróć je
+    if (order.orderDetails) {
+      return order.orderDetails;
+    }
+    // W przeciwnym razie wywołaj metodę serwisu, która pobierze orderDetails dla danego Order
+    return this.ordersService.findOrderDetailsForOrder(order.order_id);
   }
 
   @Query(() => [Order], { name: 'orders' })

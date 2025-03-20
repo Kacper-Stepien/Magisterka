@@ -43,7 +43,7 @@ export default function () {
     "GraphQL response has data": (r) => {
       const json = r.json();
       //   console.log(json);
-      return json.data && json.data.order !== null;
+      return json.data && json.data.orderOptimized !== null;
     },
   });
 

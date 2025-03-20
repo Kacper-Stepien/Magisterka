@@ -16,21 +16,11 @@ const ORDER_ID = 10248;
 export default function () {
   const query = `
       query ($id: Int!) {
-        order(id: $id) {
+        orderWithDetailsOptimized(id: $id) {
           order_id
           employee_id
           customer_id
           order_date
-          required_date
-          shipped_date
-          ship_via
-          freight
-          ship_name
-          ship_address
-          ship_city
-          ship_region
-          ship_postal_code
-          ship_country
           orderDetails {
             product_id
             unit_price
@@ -58,8 +48,8 @@ export default function () {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      // console.log(json);
-      return json.data && json.data.orderFull !== null;
+      //   console.log(json);
+      return json.data && json.data.orderWithDetailsOptimized !== null;
     },
   });
 
