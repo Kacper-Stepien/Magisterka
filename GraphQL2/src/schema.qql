@@ -41,7 +41,7 @@ type Order {
   ship_region: String
   ship_postal_code: String
   ship_country: String!
-  orderDetails: [OrderDetail]
+  orderDetails: [OrderDetail!]!
 }
 
 """
@@ -58,12 +58,6 @@ type Shipper {
 type Query {
   order(id: Int!): Order!
   orders(page: Int! = 1, limit: Int! = 10): [Order!]!
-  orderWithDetails(id: Int!): Order!
-  orderFull(id: Int!): Order!
-  orderOptimized(id: Int!): Order!
-  ordersOptimized(page: Int! = 1, limit: Int! = 10): [Order!]!
-  orderWithDetailsOptimized(id: Int!): Order!
-  orderFullOptimized(id: Int!): Order!
   orderDetails(orderId: Int!): [OrderDetail!]!
   orderDetail(orderId: Int!): OrderDetail!
   products: [Product!]!

@@ -21,15 +21,15 @@ export class OrdersResolver {
     return this.ordersService.findOne(id);
   }
 
-  @ResolveField(() => [OrderDetail], { name: 'orderDetails' })
-  async getOrderDetails(@Parent() order: Order): Promise<OrderDetail[]> {
-    // Jeśli Order już ma załadowane orderDetails, zwróć je
-    if (order.orderDetails) {
-      return order.orderDetails;
-    }
-    // W przeciwnym razie wywołaj metodę serwisu, która pobierze orderDetails dla danego Order
-    return this.ordersService.findOrderDetailsForOrder(order.order_id);
-  }
+  // @ResolveField(() => [OrderDetail], { name: 'orderDetails' })
+  // async getOrderDetails(@Parent() order: Order): Promise<OrderDetail[]> {
+  //   // Jeśli Order już ma załadowane orderDetails, zwróć je
+  //   if (order.orderDetails) {
+  //     return order.orderDetails;
+  //   }
+  //   // W przeciwnym razie wywołaj metodę serwisu, która pobierze orderDetails dla danego Order
+  //   return this.ordersService.findOrderDetailsForOrder(order.order_id);
+  // }
 
   @Query(() => [Order], { name: 'orders' })
   async getOrders(

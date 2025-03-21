@@ -7,6 +7,10 @@ GraphQL/dist
 GraphQL/node_modules
 GraphQL/build
 
+GraphQL2/dist
+GraphQL2/node_modules
+GraphQL2/build
+
 # Logs
 logs
 *.log
