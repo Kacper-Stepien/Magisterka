@@ -40,7 +40,7 @@ export class OrderDetailsResolver {
     @Parent() orderDetail: OrderDetail,
     @Info() info: GraphQLResolveInfo,
   ): Promise<Product> {
-    console.log('OrderDetailsResolver.getProduct');
+    // console.log('OrderDetailsResolver.getProduct');
     if (orderDetail.product) {
       return orderDetail.product;
     }

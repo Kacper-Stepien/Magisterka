@@ -42,14 +42,14 @@ export class OrderDetailsService {
   ): Promise<Product> {
     // Parsujemy obiekt info, aby wyodrębnić żądane pola dla typu Product.
     const parsedInfo = parseResolveInfo(info) as any;
-    console.log(`Parsed info: ${parsedInfo}`);
+    // console.log(`Parsed info: ${parsedInfo}`);
     // Zakładamy, że typ Product w schemacie nazywa się "Product".
     const productFields = parsedInfo.fieldsByTypeName?.Product;
-    console.log(`Product fields: ${productFields}`);
+    // console.log(`Product fields: ${productFields}`);
     const requestedKeys: string[] = productFields
       ? Object.keys(productFields)
       : ['product_id'];
-    console.log(`Requested keys: ${requestedKeys}`);
+    // console.log(`Requested keys: ${requestedKeys}`);
     // Mapujemy klucze na aliasy, zakładając, że nazwy pól GraphQL odpowiadają kolumnom w tabeli
     const selectFields = requestedKeys.map((key) => `product.${key}`);
 

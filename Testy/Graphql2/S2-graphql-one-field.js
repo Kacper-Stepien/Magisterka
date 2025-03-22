@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 4000;
+const VUS = parseInt(__ENV.VUS) || 100;
 
 export const options = {
   stages: [
@@ -17,38 +17,15 @@ export default function () {
   const query = `
       query ($id: Int!) {
         order(id: $id) {
-        order_id
-        customer_id
-        employee_id
-        order_date
-        required_date
-        shipped_date
-        ship_via
-        freight
-        ship_name
-        ship_address
-        ship_city
-        ship_region
-        ship_postal_code
-        ship_country
+          order_id
+          employee_id
+          customer_id
+          order_date
           orderDetails {
-            order_id
             product_id
             unit_price
             quantity
             discount
-            product {
-              product_id
-              product_name
-              supplier_id
-              category_id
-              quantity_per_unit
-              unit_price
-              units_in_stock
-              units_on_order
-              reorder_level
-              discontinued
-            }
           }
         }
       }
@@ -71,7 +48,7 @@ export default function () {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      // console.log(json);
+      //   console.log(json);
       return json.data && json.data.order !== null;
     },
   });

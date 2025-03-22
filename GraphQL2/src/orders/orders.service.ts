@@ -16,15 +16,15 @@ export class OrdersService {
   async findOne(id: number, info: GraphQLResolveInfo): Promise<Order> {
     // Parsujemy info, aby uzyskać strukturę żądanych pól dla typu Order
     const parsedInfo = parseResolveInfo(info) as any;
-    console.log(`parsedInfo: ${parsedInfo}`);
+    // console.log(`parsedInfo: ${parsedInfo}`);
     // Załóżmy, że typ w schemacie GraphQL nazywa się "Order"
     const requestedOrderFields: ResolveTree = parsedInfo.fieldsByTypeName.Order;
-    console.log(`requestedOrderFields: ${requestedOrderFields}`);
+    // console.log(`requestedOrderFields: ${requestedOrderFields}`);
     // Jeśli nie uda się wyodrębnić pól, domyślnie pobieramy tylko 'order_id'
     const orderKeys: string[] = requestedOrderFields
       ? Object.keys(requestedOrderFields)
       : ['order_id'];
-    console.log(`orderKeys: ${orderKeys}`);
+    // console.log(`orderKeys: ${orderKeys}`);
     // Wykluczamy relacje (np. orderDetails), jeśli nie chcemy ich pobierać w tym zapytaniu
     const orderSelect = orderKeys
       .filter((key) => key !== 'orderDetails')
@@ -49,12 +49,12 @@ export class OrdersService {
   ): Promise<any> {
     // Parsujemy zapytanie GraphQL, by ustalić, które pola są potrzebne
     const parsedInfo = parseResolveInfo(info) as any;
-    console.log(`parsedInfo: ${parsedInfo}`);
+    // console.log(`parsedInfo: ${parsedInfo}`);
     // Zwróć uwagę, że w obiekcie fieldsByTypeName może być np. { OrderDetail: {...} }.
     // W field resolverze 'orderDetails' klucz w fieldsByTypeName zwykle będzie 'OrderDetail'.
     const orderDetailFields: ResolveTree =
       parsedInfo.fieldsByTypeName?.OrderDetail;
-    console.log(`orderDetailFields: ${orderDetailFields}`);
+    // console.log(`orderDetailFields: ${orderDetailFields}`);
     // Wyodrębniamy klucze, które faktycznie występują w zapytaniu
     const requestedKeys = orderDetailFields
       ? Object.keys(orderDetailFields)
@@ -62,7 +62,7 @@ export class OrdersService {
     if (!requestedKeys.includes('product_id')) {
       requestedKeys.push('product_id');
     }
-    console.log(`requestedKeys: ${requestedKeys}`);
+    // console.log(`requestedKeys: ${requestedKeys}`);
     // Mapujemy je na aliasy w bazie (zakładamy, że nazwy pól w GraphQL i kolumny w bazie są takie same)
     const selectFields = requestedKeys.map((key) => `orderDetail.${key}`);
 

@@ -21,7 +21,7 @@ export class OrdersResolver {
     @Args('id', { type: () => Int }) id: number,
     @Info() info: GraphQLResolveInfo,
   ): Promise<Order> {
-    console.log('OrderResolver.getOrder');
+    // console.log('OrderResolver.getOrder');
     return this.ordersService.findOne(id, info);
   }
 
