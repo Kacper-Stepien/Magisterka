@@ -1,6 +1,14 @@
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { OrderDetail } from 'src/order-details/order-detail.entity';
+import { Supplier } from 'src/suppliers/supplier.entity';
 
 @ObjectType()
 @Entity({ name: 'products' })
@@ -48,4 +56,8 @@ export class Product {
   @Field(() => [OrderDetail], { nullable: 'itemsAndList' })
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
   orderDetails: OrderDetail[];
+
+  @ManyToOne(() => Supplier, (supplier) => supplier.products)
+  @JoinColumn({ name: 'supplier_id' })
+  supplier: Supplier;
 }

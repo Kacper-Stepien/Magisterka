@@ -2,6 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Supplier {
+  supplier_id: Int!
+  company_name: String!
+  contact_name: String!
+  contact_title: String!
+  address: String!
+  city: String!
+  region: String
+  postal_code: String!
+  country: String!
+  phone: String!
+  fax: String
+  homepage: String
+  products: [Product!]
+}
+
 type Product {
   product_id: Int!
   product_name: String!
@@ -14,6 +30,7 @@ type Product {
   reorder_level: Int!
   discontinued: Int!
   orderDetails: [OrderDetail]
+  supplier: Supplier!
 }
 
 type OrderDetail {
@@ -62,6 +79,8 @@ type Query {
   orderDetail(orderId: Int!): OrderDetail!
   products: [Product!]!
   product(id: Int!): Product!
+  supplier(id: Int!): Supplier!
+  suppliers: [Supplier!]!
   shippers: [Shipper!]!
   shipper(id: Int!): Shipper!
 }

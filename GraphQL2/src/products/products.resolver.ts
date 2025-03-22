@@ -1,12 +1,25 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 import { Product } from './product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
+import { ProductSupplierLoader } from 'src/suppliers/product-supplier.loader';
+import { Supplier } from 'src/suppliers/supplier.entity';
 
 @Resolver(() => Product)
 export class ProductsResolver {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly productSupplierLoader: ProductSupplierLoader,
+  ) {}
 
   @Query(() => [Product], { name: 'products' })
   async getProducts(): Promise<Product[]> {
@@ -18,6 +31,11 @@ export class ProductsResolver {
     @Args('id', { type: () => Int }) id: number,
   ): Promise<Product> {
     return this.productsService.findOne(id);
+  }
+
+  @ResolveField(() => Supplier, { name: 'supplier' })
+  async getSupplier(@Parent() product: Product): Promise<Supplier> {
+    return this.productSupplierLoader.batchSuppliers.load(product.supplier_id);
   }
 
   @Mutation(() => Product, { name: 'createProduct' })
