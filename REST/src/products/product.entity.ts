@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { OrderDetail } from 'src/order-details/order-detail.entity';
+import { Supplier } from 'src/suppliers/supplier.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -35,4 +43,8 @@ export class Product {
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
   orderDetails: OrderDetail[];
+
+  @ManyToOne(() => Supplier, (supplier) => supplier.products)
+  @JoinColumn({ name: 'supplier_id' })
+  supplier: Supplier;
 }

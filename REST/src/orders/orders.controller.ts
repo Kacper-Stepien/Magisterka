@@ -26,6 +26,11 @@ export class OrdersController {
     return this.ordersService.findOneWithDetailsAndProducts(+id);
   }
 
+  @Get(':id/with-suppliers')
+  async getOrderWithAllData(@Param('id') id: string): Promise<Order> {
+    return this.ordersService.findOneWithAll(+id);
+  }
+
   @Get(':id')
   async getOrder(@Param('id') id: string): Promise<Order> {
     return this.ordersService.findOne(+id);

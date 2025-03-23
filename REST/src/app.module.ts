@@ -10,6 +10,8 @@ import { ShippersModule } from './shippers/shippers.module';
 import { Shipper } from './shippers/shipper.entity';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/product.entity';
+import { SuppliersModule } from './suppliers/suppliers.module';
+import { Supplier } from './suppliers/supplier.entity';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { Product } from './products/product.entity';
       username: 'postgres',
       password: 'kacper',
       database: 'magisterka',
-      entities: [Order, OrderDetail, Shipper, Product],
+      entities: [Order, OrderDetail, Shipper, Product, Supplier],
       synchronize: false,
       logging: false,
       extra: {
@@ -31,6 +33,7 @@ import { Product } from './products/product.entity';
     OrderDetailsModule,
     ShippersModule,
     ProductsModule,
+    SuppliersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

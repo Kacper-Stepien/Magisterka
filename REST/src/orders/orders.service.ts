@@ -52,4 +52,21 @@ export class OrdersService {
     }
     return order;
   }
+
+  async findOneWithAll(id: number): Promise<Order> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_id: id },
+      relations: [
+        'orderDetails',
+        'orderDetails.product',
+        'orderDetails.product.supplier',
+      ],
+    });
+
+    if (!order) {
+      throw new NotFoundException(`Order with id ${id} not found`);
+    }
+
+    return order;
+  }
 }
