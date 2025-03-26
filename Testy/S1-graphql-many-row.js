@@ -1,19 +1,22 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
+const VUS = parseInt(__ENV.VUS) || 100;
+const ROWS = parseInt(__ENV.ROWS) || 500;
+
 export const options = {
   stages: [
-    { duration: "10m", target: 10000 },
-    { duration: "80m", target: 10000 },
-    { duration: "10m", target: 0 },
-    // { duration: "2m", target: 4000 },
-    // { duration: "12m", target: 4000 },
-    // { duration: "2m", target: 0 },
+    // { duration: "10m", target: 10000 },
+    // { duration: "80m", target: 10000 },
+    // { duration: "10m", target: 0 },
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
+    { duration: "2m", target: 0 },
   ],
 };
 
 const PAGE = 1;
-const LIMIT = 100;
+const LIMIT = ROWS;
 
 export default function () {
   const query = `

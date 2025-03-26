@@ -1,10 +1,12 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
+const VUS = parseInt(__ENV.VUS) || 4000;
+
 export const options = {
   stages: [
-    { duration: "2m", target: 4000 },
-    { duration: "12m", target: 4000 },
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
     { duration: "2m", target: 0 },
   ],
 };
@@ -19,7 +21,7 @@ export default function () {
 
   const query = `
       query ($id: Int!) {
-        orderOptimized(id: $id) {
+        order(id: $id) {
           order_id
         }
       }
