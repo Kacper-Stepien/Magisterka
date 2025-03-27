@@ -66,6 +66,21 @@ export class OrdersService {
     return order;
   }
 
+  async findOneWithAllRelations(id: number): Promise<Order> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_id: id },
+      relations: [
+        'orderDetails',
+        'orderDetails.product',
+        'orderDetails.product.supplier',
+      ],
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with id ${id} not found`);
+    }
+    return order;
+  }
+
   // Optymalizacja zapytania
   // Nowa metoda optymalizowana, która dynamicznie wybiera tylko żądane pola
   async findOneOptimized(id: number, info: GraphQLResolveInfo): Promise<Order> {
@@ -239,6 +254,66 @@ export class OrdersService {
     if (productSelect.length > 0) {
       query = query.addSelect(productSelect);
     }
+
+    const order = await query.getOne();
+    if (!order) {
+      throw new NotFoundException(`Order with id ${id} not found`);
+    }
+    return order;
+  }
+
+  async findOneWithAllRelationsOptimized(
+    id: number,
+    info: GraphQLResolveInfo,
+  ): Promise<Order> {
+    const parsedInfo = parseResolveInfo(info) as any;
+    const requestedOrderFields = parsedInfo.fieldsByTypeName.Order;
+
+    const orderKeys = Object.keys(requestedOrderFields ?? {});
+    const orderSelect = orderKeys
+      .filter((key) => key !== 'orderDetails')
+      .map((key) => `order.${key}`);
+
+    let orderDetailSelect: string[] = [];
+    let productSelect: string[] = [];
+    let supplierSelect: string[] = [];
+
+    if (requestedOrderFields?.orderDetails) {
+      const orderDetailFields =
+        requestedOrderFields.orderDetails.fieldsByTypeName?.OrderDetail ?? {};
+      const orderDetailKeys = Object.keys(orderDetailFields);
+      orderDetailSelect = orderDetailKeys
+        .filter((key) => key !== 'product')
+        .map((key) => `orderDetail.${key}`);
+
+      if (orderDetailFields.product) {
+        const productFields =
+          orderDetailFields.product.fieldsByTypeName?.Product ?? {};
+        const productKeys = Object.keys(productFields);
+        productSelect = productKeys
+          .filter((key) => key !== 'supplier')
+          .map((key) => `product.${key}`);
+
+        if (productFields.supplier) {
+          const supplierFields =
+            productFields.supplier.fieldsByTypeName?.Supplier ?? {};
+          const supplierKeys = Object.keys(supplierFields);
+          supplierSelect = supplierKeys.map((key) => `supplier.${key}`);
+        }
+      }
+    }
+
+    const query = this.ordersRepository
+      .createQueryBuilder('order')
+      .select(orderSelect)
+      .leftJoinAndSelect('order.orderDetails', 'orderDetail')
+      .leftJoinAndSelect('orderDetail.product', 'product')
+      .leftJoinAndSelect('product.supplier', 'supplier')
+      .where('order.order_id = :id', { id });
+
+    if (orderDetailSelect.length > 0) query.addSelect(orderDetailSelect);
+    if (productSelect.length > 0) query.addSelect(productSelect);
+    if (supplierSelect.length > 0) query.addSelect(supplierSelect);
 
     const order = await query.getOne();
     if (!order) {

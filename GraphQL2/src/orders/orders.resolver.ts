@@ -6,11 +6,14 @@ import {
   Info,
   ResolveField,
   Parent,
+  Mutation,
 } from '@nestjs/graphql';
 import { OrdersService } from './orders.service';
 import { Order } from './order.entity';
 import { GraphQLResolveInfo } from 'graphql';
 import { OrderDetail } from 'src/order-details/order-detail.entity';
+import { CreateOrderInput } from './dto/create-order.input';
+import { UpdateOrderInput } from './dto/update-order.input';
 
 @Resolver(() => Order)
 export class OrdersResolver {
@@ -47,6 +50,23 @@ export class OrdersResolver {
     return this.ordersService.findOrderDetailsForOrder(order.order_id, info);
   }
 
+  @Mutation(() => Order)
+  async createOrder(@Args('input') input: CreateOrderInput): Promise<Order> {
+    return this.ordersService.create(input);
+  }
+
+  @Mutation(() => Order)
+  async updateOrder(@Args('input') input: UpdateOrderInput): Promise<Order> {
+    return this.ordersService.update(input);
+  }
+
+  @Mutation(() => Boolean)
+  async deleteOrder(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<boolean> {
+    await this.ordersService.remove(id);
+    return true;
+  }
   // @Query(() => Order, { name: 'orderWithDetails' })
   // async getOrderWithDetails(
   //   @Args('id', { type: () => Int }) id: number,

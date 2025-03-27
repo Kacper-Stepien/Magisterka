@@ -31,7 +31,7 @@ import { Supplier } from './suppliers/supplier.entity';
       database: 'magisterka',
       entities: [Order, OrderDetail, Shipper, Product, Supplier],
       synchronize: false,
-      logging: false,
+      logging: true,
       extra: {
         connectionLimit: 1000,
       },

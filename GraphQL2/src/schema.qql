@@ -86,9 +86,45 @@ type Query {
 }
 
 type Mutation {
+  createOrder(input: CreateOrderInput!): Order!
+  updateOrder(input: UpdateOrderInput!): Order!
+  deleteOrder(id: Int!): Boolean!
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(id: Int!, updateProductInput: UpdateProductInput!): Product!
   removeProduct(id: Int!): Product!
+}
+
+input CreateOrderInput {
+  customer_id: String!
+  employee_id: Int!
+  order_date: DateTime!
+  required_date: DateTime!
+  shipped_date: DateTime
+  ship_via: Int!
+  freight: Float!
+  ship_name: String!
+  ship_address: String!
+  ship_city: String!
+  ship_region: String
+  ship_postal_code: String!
+  ship_country: String!
+}
+
+input UpdateOrderInput {
+  customer_id: String
+  employee_id: Int
+  order_date: DateTime
+  required_date: DateTime
+  shipped_date: DateTime
+  ship_via: Int
+  freight: Float
+  ship_name: String
+  ship_address: String
+  ship_city: String
+  ship_region: String
+  ship_postal_code: String
+  ship_country: String
+  order_id: Int!
 }
 
 input CreateProductInput {

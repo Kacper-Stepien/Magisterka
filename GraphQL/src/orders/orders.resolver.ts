@@ -53,6 +53,13 @@ export class OrdersResolver {
     return this.ordersService.findOneWithDetailsAndProducts(id);
   }
 
+  @Query(() => Order)
+  async orderWithAllRelations(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Order> {
+    return this.ordersService.findOneWithAllRelations(id);
+  }
+
   // Optymalizacja zapytania ////////////////////////////////////////////////////////////////////////////
   @Query(() => Order, { name: 'orderOptimized' })
   async getOrderOptimized(
@@ -85,5 +92,13 @@ export class OrdersResolver {
     @Info() info: GraphQLResolveInfo,
   ): Promise<Order> {
     return this.ordersService.findOneWithDetailsAndProductsOptimized(id, info);
+  }
+
+  @Query(() => Order)
+  async orderWithAllRelationsOptimized(
+    @Args('id', { type: () => Int }) id: number,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Order> {
+    return this.ordersService.findOneWithAllRelationsOptimized(id, info);
   }
 }

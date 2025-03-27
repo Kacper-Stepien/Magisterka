@@ -4,13 +4,11 @@ import { sleep, check } from "k6";
 const VUS = parseInt(__ENV.VUS) || 4000;
 
 export const options = {
-  vus: 1,
-  iterations: 1,
-  // stages: [
-  //   { duration: "2m", target: VUS },
-  //   { duration: "12m", target: VUS },
-  //   { duration: "2m", target: 0 },
-  // ],
+  stages: [
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
+    { duration: "2m", target: 0 },
+  ],
 };
 
 const ORDER_ID = 10248;
@@ -87,7 +85,7 @@ export default function () {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      console.log(json);
+      // console.log(json);
       return json.data && json.data.order !== null;
     },
   });

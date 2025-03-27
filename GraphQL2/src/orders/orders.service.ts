@@ -5,6 +5,8 @@ import { Order } from './order.entity';
 import { GraphQLResolveInfo } from 'graphql';
 import { parseResolveInfo, ResolveTree } from 'graphql-parse-resolve-info';
 import { OrderDetail } from 'src/order-details/order-detail.entity';
+import { CreateOrderInput } from './dto/create-order.input';
+import { UpdateOrderInput } from './dto/update-order.input';
 
 @Injectable()
 export class OrdersService {
@@ -125,6 +127,35 @@ export class OrdersService {
       );
     }
     return orders;
+  }
+
+  async create(input: CreateOrderInput): Promise<Order> {
+    const order = this.ordersRepository.create(input);
+    return this.ordersRepository.save(order);
+  }
+
+  async update(input: UpdateOrderInput): Promise<Order> {
+    const existing = await this.ordersRepository.findOneBy({
+      order_id: input.order_id,
+    });
+
+    if (!existing) {
+      throw new NotFoundException(`Order with ID ${input.order_id} not found`);
+    }
+
+    const updated = this.ordersRepository.merge(existing, input);
+    return this.ordersRepository.save(updated);
+  }
+
+  async remove(order_id: number): Promise<Order> {
+    const existing = await this.ordersRepository.findOneBy({ order_id });
+
+    if (!existing) {
+      throw new NotFoundException(`Order with ID ${order_id} not found`);
+    }
+
+    await this.ordersRepository.remove(existing);
+    return existing;
   }
 
   // async findMany(page: number, limit: number): Promise<Order[]> {
