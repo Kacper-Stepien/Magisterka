@@ -31,10 +31,13 @@ import { Supplier } from './suppliers/supplier.entity';
       database: 'magisterka',
       entities: [Order, OrderDetail, Shipper, Product, Supplier],
       synchronize: false,
-      logging: true,
+      logging: false,
       extra: {
         connectionLimit: 1000,
       },
+      // extra: {
+      //   max: 30, // lub 50, zależnie od liczby workerów i intensywności
+      // },
     }),
     OrdersModule,
     OrderDetailsModule,

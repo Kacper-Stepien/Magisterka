@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check, group } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 10;
+const VUS = parseInt(__ENV.VUS) || 100;
 const ORDER_ID = 10248;
 
 export const options = {
@@ -14,7 +14,7 @@ export const options = {
 
 export default function () {
   group("Transaction: Order Details with Products and Suppliers", function () {
-    let orderRes = http.get(`http://localhost:3000/orders/${ORDER_ID}`);
+    let orderRes = http.get(`http://172.24.202.244:3000/orders/${ORDER_ID}`);
     check(orderRes, {
       "order status is 200": (r) => r.status === 200,
     });

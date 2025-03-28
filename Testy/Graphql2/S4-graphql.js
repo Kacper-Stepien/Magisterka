@@ -4,13 +4,11 @@ import { sleep, check } from "k6";
 const VUS = parseInt(__ENV.VUS) || 4000;
 
 export const options = {
-  vus: 1,
-  iterations: 1,
-  // stages: [
-  //   { duration: "2m", target: VUS },
-  //   { duration: "12m", target: VUS },
-  //   { duration: "2m", target: 0 },
-  // ],
+  stages: [
+    { duration: "2m", target: VUS },
+    { duration: "12m", target: VUS },
+    { duration: "2m", target: 0 },
+  ],
 };
 
 const ORDER_ID = 10248;
@@ -18,7 +16,7 @@ const ORDER_ID = 10248;
 export default function () {
   const query = `
       query ($id: Int!) {
-        orderWithAllRelations(id: $id) {
+        order(id: $id) {
             order_id
             customer_id
             employee_id
@@ -81,13 +79,13 @@ export default function () {
     headers: { "Content-Type": "application/json" },
   };
 
-  let res = http.post("http://localhost:3000/graphql", payload, params);
+  let res = http.post("http://172.24.192.1:3000/graphql", payload, params);
 
   check(res, {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      console.log(json);
+      //   console.log(json);
       return json.data && json.data.order !== null;
     },
   });

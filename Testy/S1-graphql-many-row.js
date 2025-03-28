@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 100;
+const VUS = parseInt(__ENV.VUS) || 4000;
 const ROWS = parseInt(__ENV.ROWS) || 500;
 
 export const options = {
@@ -9,7 +9,7 @@ export const options = {
     // { duration: "10m", target: 10000 },
     // { duration: "80m", target: 10000 },
     // { duration: "10m", target: 0 },
-    { duration: "2m", target: VUS },
+    { duration: "4m", target: VUS },
     { duration: "12m", target: VUS },
     { duration: "2m", target: 0 },
   ],
@@ -48,9 +48,11 @@ export default function () {
   });
 
   const params = {
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Connection: "keep-alive",
+    },
   };
-
   const res = http.post("http://localhost:3000/graphql", payload, params);
 
   check(res, {
