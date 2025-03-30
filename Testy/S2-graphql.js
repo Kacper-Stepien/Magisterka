@@ -16,7 +16,7 @@ const ORDER_ID = 10248;
 export default function () {
   const query = `
       query ($id: Int!) {
-        order(id: $id) {
+        orderWithDetails(id: $id) {
           order_id
           employee_id
           customer_id
@@ -59,7 +59,7 @@ export default function () {
     "GraphQL response has data": (r) => {
       const json = r.json();
       // console.log(json);
-      return json.data && json.data.orderFull !== null;
+      return json.data && json.data.orderWithDetails !== null;
     },
   });
 

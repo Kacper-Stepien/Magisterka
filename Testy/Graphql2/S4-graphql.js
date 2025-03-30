@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 4000;
+const VUS = parseInt(__ENV.VUS) || 2000;
 
 export const options = {
   stages: [
@@ -76,10 +76,12 @@ export default function () {
   });
 
   const params = {
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 
-  let res = http.post("http://172.24.192.1:3000/graphql", payload, params);
+  let res = http.post("http://localhost:3000/graphql", payload, params);
 
   check(res, {
     "GraphQL status is 200": (r) => r.status === 200,

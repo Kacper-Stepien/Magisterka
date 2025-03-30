@@ -37,7 +37,7 @@ export default function () {
             ship_postal_code
             ship_country
         }
-    }`; // 👈 zapytanie GraphQL
+    }`;
 
   const variables = {
     input: {

@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 4000;
+const VUS = parseInt(__ENV.VUS) || 2000;
 
 export const options = {
   stages: [

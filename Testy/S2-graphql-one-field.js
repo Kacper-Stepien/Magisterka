@@ -48,8 +48,8 @@ export default function () {
     "GraphQL status is 200": (r) => r.status === 200,
     "GraphQL response has data": (r) => {
       const json = r.json();
-      //   console.log(json);
-      return json.data && json.data.orderFull !== null;
+      console.log(json);
+      return json.data && json.data.orderWithDetails !== null;
     },
   });
 
