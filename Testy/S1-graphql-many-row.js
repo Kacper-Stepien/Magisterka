@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep, check } from "k6";
 
-const VUS = parseInt(__ENV.VUS) || 4000;
+const VUS = parseInt(__ENV.VUS) || 5000;
 const ROWS = parseInt(__ENV.ROWS) || 500;
 
 export const options = {
@@ -53,7 +53,7 @@ export default function () {
       Connection: "keep-alive",
     },
   };
-  const res = http.post("http://localhost:3000/graphql", payload, params);
+  const res = http.post("http://172.24.192.1:3000/graphql", payload, params);
 
   check(res, {
     "GraphQL status is 200": (r) => r.status === 200,

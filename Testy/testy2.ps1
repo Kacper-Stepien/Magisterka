@@ -1,6 +1,6 @@
 $scenarios = @(2000)
 $records = @(100, 500)
-$liczbaTestow = 7
+$liczbaTestow = 10
 
 
 # Dla 100 i 500 rekordów
